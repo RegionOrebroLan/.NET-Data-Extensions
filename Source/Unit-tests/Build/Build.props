@@ -1,0 +1,7 @@
+<Project>
+	<PropertyGroup>
+		<AssemblyName>RegionOrebroLan.Data.UnitTests</AssemblyName>
+		<AssemblyOriginatorKeyFile>$(SolutionDir).Global\Signing\StrongName.Development.snk</AssemblyOriginatorKeyFile>
+		<CodeAnalysisRuleSet>CodeAnalysis\Rules.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+</Project>

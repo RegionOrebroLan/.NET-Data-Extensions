@@ -1,0 +1,27 @@
+{
+	"Connections": {
+		"Drop-Database-Fail-Test": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Drop-Database-Fail-Test.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Existing-Database": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Existing-Database.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Existing-Database-File": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Existing-Database-File.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Existing-Database-File-Without-Log-File": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Existing-Database-File-Without-Log-File.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Nonexisting-Database": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Nonexisting-Database.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Only-Provider": {
+			"ProviderName": "System.Data.SqlClient"
+		}
+	}
+}

@@ -1,0 +1,27 @@
+<Project>
+	<PropertyGroup Label="Initial">
+		<Company>Region Örebro län</Company>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<VersionPrereleaseName></VersionPrereleaseName>
+	</PropertyGroup>
+	<PropertyGroup Label="Assembly">
+		<AssemblyName>RegionOrebroLan.Data</AssemblyName>
+		<AssemblyOriginatorKeyFile>$(SolutionDir).Global\Signing\StrongName.snk</AssemblyOriginatorKeyFile>
+		<AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
+		<CodeAnalysisRuleSet>CodeAnalysis\Rules.ruleset</CodeAnalysisRuleSet>
+		<DelaySign>false</DelaySign>
+		<Description>Data additions and extensions for .NET.</Description>
+		<FileVersion>$(VersionPrefix).0</FileVersion>
+		<RootNamespace>$(AssemblyName)</RootNamespace>
+		<SignAssembly>true</SignAssembly>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Version>$(VersionPrefix)</Version>
+		<Version Condition="$(VersionPrereleaseName) != ''">$(Version)-$(VersionPrereleaseName)</Version>
+	</PropertyGroup>
+	<PropertyGroup Label="NuGet-Package">
+		<Authors>$(Company)</Authors>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://github.com/RegionOrebroLan/.NET-Data-Extensions/</PackageProjectUrl>
+		<PackageTags></PackageTags>
+	</PropertyGroup>
+</Project>

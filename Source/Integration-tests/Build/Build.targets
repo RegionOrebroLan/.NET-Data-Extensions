@@ -1,0 +1,14 @@
+<Project>
+	<Target Name="CopyFiles" BeforeTargets="BeforeBuild" Condition="@(FileToCopy) != ''">
+		<Message
+			Condition="%(CopyAlways) OR (!Exists('%(DestinationFile)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) > $([System.IO.File]::GetLastWriteTime('%(DestinationFile)').Ticks))"
+			Importance="high"
+			Text="Target 'CopyFiles': Copying '%(FileToCopy.FullPath)' to '%(DestinationFile)'."
+		/>
+		<Copy
+			Condition="%(CopyAlways) OR (!Exists('%(DestinationFile)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) > $([System.IO.File]::GetLastWriteTime('%(DestinationFile)').Ticks))"
+			DestinationFiles="%(DestinationFile)"
+			SourceFiles="%(FileToCopy.FullPath)"
+		/>
+	</Target>
+</Project>
