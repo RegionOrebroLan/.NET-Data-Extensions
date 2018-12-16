@@ -22,6 +22,7 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 		private const string _existingDatabaseConnectionKey = "Existing-Database";
 		private const string _existingDatabaseFileConnectionKey = "Existing-Database-File";
 		private const string _existingDatabaseFileWithoutLogFileConnectionKey = "Existing-Database-File-Without-Log-File";
+		private const int _maximumIdentifierLength = 124;
 		private const string _nonexistingDatabaseConnectionKey = "Nonexisting-Database";
 		private const string _onlyProviderConnectionKey = "Only-Provider";
 
@@ -54,6 +55,7 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 		protected internal virtual string ExistingDatabaseConnectionKey => _existingDatabaseConnectionKey;
 		protected internal virtual string ExistingDatabaseFileConnectionKey => _existingDatabaseFileConnectionKey;
 		protected internal virtual string ExistingDatabaseFileWithoutLogFileConnectionKey => _existingDatabaseFileWithoutLogFileConnectionKey;
+		protected internal virtual int MaximumIdentifierLength => _maximumIdentifierLength;
 		protected internal virtual string NonexistingDatabaseConnectionKey => _nonexistingDatabaseConnectionKey;
 		protected internal virtual string OnlyProviderConnectionKey => _onlyProviderConnectionKey;
 
@@ -180,6 +182,66 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 			Assert.IsTrue(databaseManager.FileSystem.File.Exists(databaseLogFilePath));
 
 			databaseManager.DetachDatabase(existingDatabaseFileConnection.ConnectionString);
+		}
+
+		[TestMethod]
+		public void CreateDatabase_IfTheDatabaseFilePathIs124CharactersLong_ShouldNotThrowAnSqlException()
+		{
+			var nonexistingDatabaseConnection = Global.ConnectionSettings[this.NonexistingDatabaseConnectionKey];
+			var connectionStringBuilder = this.ConnectionStringBuilderFactory.Create(nonexistingDatabaseConnection.ConnectionString, nonexistingDatabaseConnection.ProviderName);
+			var databaseManager = this.GetDatabaseManager(nonexistingDatabaseConnection);
+			var databaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(databaseManager.ApplicationDomain);
+			var databaseDirectoryPath = Path.GetDirectoryName(databaseFilePath);
+			var databaseFileName = Path.GetFileName(databaseFilePath);
+			var originalDatabaseFileName = Path.GetFileName(databaseFilePath);
+
+			while(Path.Combine(databaseDirectoryPath, databaseFileName).Length < this.MaximumIdentifierLength)
+			{
+				databaseFileName = "_" + databaseFileName;
+			}
+
+			connectionStringBuilder.DatabaseFilePath = connectionStringBuilder.DatabaseFilePath.Replace(originalDatabaseFileName, databaseFileName, StringComparison.Ordinal);
+
+			databaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(databaseManager.ApplicationDomain);
+
+			Assert.AreEqual(this.MaximumIdentifierLength, databaseFilePath.Length);
+
+			databaseManager.CreateDatabase(connectionStringBuilder.ConnectionString);
+			databaseManager.DropDatabase(connectionStringBuilder.ConnectionString);
+		}
+
+		[TestMethod]
+		public void CreateDatabase_IfTheDatabaseFilePathIsLongerThan124Characters_ShouldThrowAnSqlException()
+		{
+			var nonexistingDatabaseConnection = Global.ConnectionSettings[this.NonexistingDatabaseConnectionKey];
+			var connectionStringBuilder = this.ConnectionStringBuilderFactory.Create(nonexistingDatabaseConnection.ConnectionString, nonexistingDatabaseConnection.ProviderName);
+			var databaseManager = this.GetDatabaseManager(nonexistingDatabaseConnection);
+			var databaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(databaseManager.ApplicationDomain);
+			var databaseDirectoryPath = Path.GetDirectoryName(databaseFilePath);
+			var databaseFileName = Path.GetFileName(databaseFilePath);
+			var originalDatabaseFileName = Path.GetFileName(databaseFilePath);
+
+			while(Path.Combine(databaseDirectoryPath, databaseFileName).Length <= this.MaximumIdentifierLength)
+			{
+				databaseFileName = "_" + databaseFileName;
+			}
+
+			connectionStringBuilder.DatabaseFilePath = connectionStringBuilder.DatabaseFilePath.Replace(originalDatabaseFileName, databaseFileName, StringComparison.Ordinal);
+
+			databaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(databaseManager.ApplicationDomain);
+
+			Assert.AreEqual(this.MaximumIdentifierLength + 1, databaseFilePath.Length);
+
+			try
+			{
+				databaseManager.CreateDatabase(connectionStringBuilder.ConnectionString);
+				Assert.Fail("Exception not thrown.");
+			}
+			catch(Exception exception)
+			{
+				if(!(exception is SqlException sqlException) || sqlException.ErrorCode != -2146232060)
+					Assert.Fail("Invalid exception.");
+			}
 		}
 
 		[TestMethod]

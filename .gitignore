@@ -262,9 +262,8 @@ __pycache__/
 
 # Custom
 Source/.Global/Signing/*
-Source/Integration-tests/App_Data/*
-
 !Source/.Global/Signing/ReadMe.md
 !Source/.Global/Signing/StrongName.Development.snk
-!Source/Integration-tests/App_Data/*.Copy.ldf
-!Source/Integration-tests/App_Data/*.Copy.mdf
+
+!Source/Integration-tests/App_Data/*.ldf
+!Source/Integration-tests/App_Data/*.mdf

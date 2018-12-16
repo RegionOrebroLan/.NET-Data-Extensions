@@ -4,14 +4,4 @@
 		<AssemblyOriginatorKeyFile>$(SolutionDir).Global\Signing\StrongName.Development.snk</AssemblyOriginatorKeyFile>
 		<CodeAnalysisRuleSet>CodeAnalysis\Rules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
-	<ItemDefinitionGroup>
-		<FileToCopy>
-			<CopyAlways>false</CopyAlways>
-		</FileToCopy>
-	</ItemDefinitionGroup>
-	<ItemGroup>
-		<FileToCopy Include="App_Data\**\*.Copy.*">
-			<DestinationFile>App_Data\%(RecursiveDir)$([System.String]::Copy(%(Filename)).Replace('.Copy', ''))%(Extension)</DestinationFile>
-		</FileToCopy>
-	</ItemGroup>
 </Project>

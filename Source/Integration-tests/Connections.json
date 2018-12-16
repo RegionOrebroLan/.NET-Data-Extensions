@@ -1,5 +1,9 @@
 {
 	"Connections": {
+		"Delete-Database": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
 		"Drop-Database-Fail-Test": {
 			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Drop-Database-Fail-Test.mdf;Integrated Security=True;MultipleActiveResultSets=True",
 			"ProviderName": "System.Data.SqlClient"
