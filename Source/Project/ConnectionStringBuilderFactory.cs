@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using RegionOrebroLan.Data.Common;
 using RegionOrebroLan.Data.SqlClient;
@@ -32,6 +33,8 @@ namespace RegionOrebroLan.Data
 			return this.Create(null, providerName);
 		}
 
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
+		[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
 		public virtual IConnectionStringBuilder Create(string connectionString, string providerName)
 		{
 			try

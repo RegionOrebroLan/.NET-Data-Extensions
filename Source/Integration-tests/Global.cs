@@ -52,6 +52,7 @@ namespace RegionOrebroLan.Data.IntegrationTests
 		#region Methods
 
 		[AssemblyCleanup]
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public static void Cleanup()
 		{
 			var applicationDomain = new AppDomainWrapper(AppDomain.CurrentDomain);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Abstractions;
 using System.Threading;
@@ -211,6 +212,7 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 		}
 
 		[TestMethod]
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 		public void CreateDatabase_IfTheDatabaseFilePathIsLongerThan124Characters_ShouldThrowAnSqlException()
 		{
 			var nonexistingDatabaseConnection = Global.ConnectionSettings[this.NonexistingDatabaseConnectionKey];
@@ -258,6 +260,7 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 			this.DatabaseExistsTest(Global.ConnectionSettings[this.NonexistingDatabaseConnectionKey], false);
 		}
 
+		[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 		protected internal virtual void DatabaseExistsTest(IConnectionSetting connectionSetting, bool expectedValue)
 		{
 			Assert.AreEqual(expectedValue, this.GetDatabaseManager(connectionSetting).DatabaseExists(connectionSetting.ConnectionString));
@@ -366,6 +369,7 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 		}
 
 		[CLSCompliant(false)]
+		[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 		protected internal virtual DatabaseManager GetDatabaseManager(IConnectionSetting connectionSetting)
 		{
 			return (DatabaseManager) this.DatabaseManagerFactory.Create(connectionSetting.ProviderName);

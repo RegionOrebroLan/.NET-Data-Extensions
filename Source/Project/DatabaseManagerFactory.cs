@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO.Abstractions;
 using RegionOrebroLan.Data.Common;
@@ -35,6 +36,8 @@ namespace RegionOrebroLan.Data
 
 		#region Methods
 
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
+		[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
 		public virtual IDatabaseManager Create(string providerName)
 		{
 			try
