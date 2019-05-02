@@ -1,8 +1,8 @@
 <Project>
 	<PropertyGroup Label="Initial">
 		<Company>Region Örebro län</Company>
-		<VersionPrefix>1.0.0</VersionPrefix>
-		<VersionPrereleaseName></VersionPrereleaseName>
+		<VersionPrefix>1.1.0</VersionPrefix>
+		<VersionPrereleaseName>alpha</VersionPrereleaseName>
 	</PropertyGroup>
 	<PropertyGroup Label="Assembly">
 		<AssemblyName>RegionOrebroLan.Data</AssemblyName>

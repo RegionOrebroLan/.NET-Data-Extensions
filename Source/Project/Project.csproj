@@ -4,9 +4,9 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="RegionOrebroLan" Version="1.0.0" />
+		<PackageReference Include="RegionOrebroLan" Version="1.0.4" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
-		<PackageReference Include="System.IO.Abstractions" Version="2.1.0.231" />
+		<PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="CodeAnalysis\Dictionary.xml" />
