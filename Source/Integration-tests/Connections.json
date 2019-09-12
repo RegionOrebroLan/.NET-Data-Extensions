@@ -1,5 +1,25 @@
 {
 	"Connections": {
+		"Create-Database-Extension-Test-1": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Extension-Test-1.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Create-Database-Extension-Test-2": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Extension-Test-2.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Create-Database-Extension-Test-3": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Extension-Test-3.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Create-Database-Extension-Test-4": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Extension-Test-4.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Create-Database-Extension-Test-5": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Extension-Test-5.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
 		"Delete-Database": {
 			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;Integrated Security=True;MultipleActiveResultSets=True",
 			"ProviderName": "System.Data.SqlClient"
@@ -22,6 +42,14 @@
 		},
 		"Nonexisting-Database": {
 			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Nonexisting-Database.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Nonexisting-Database-File": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Nonexisting-Database-File.mdf;Integrated Security=True;MultipleActiveResultSets=True",
+			"ProviderName": "System.Data.SqlClient"
+		},
+		"Nonexisting-Log-File": {
+			"ConnectionString": "Server=(LocalDB)\\MSSQLLocalDB;AttachDbFileName=|DataDirectory|Nonexisting-Log-File.mdf;Integrated Security=True;MultipleActiveResultSets=True",
 			"ProviderName": "System.Data.SqlClient"
 		},
 		"Only-Provider": {

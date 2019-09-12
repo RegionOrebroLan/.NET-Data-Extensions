@@ -2,55 +2,31 @@
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.IO.Abstractions;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RegionOrebroLan.Data.Common;
 using RegionOrebroLan.Data.Extensions;
 using RegionOrebroLan.Data.IntegrationTests.Configuration;
-using RegionOrebroLan.Data.SqlClient;
 
 namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 {
 	[TestClass]
-	public class DatabaseManagerTest
+	public class DatabaseManagerTest : BasicDatabaseManagerTest
 	{
 		#region Fields
 
-		private static IConnectionStringBuilderFactory _connectionStringBuilderFactory;
-		private static IDatabaseManagerFactory _databaseManagerFactory;
 		private const string _dropDatabaseFailTestConnectionKey = "Drop-Database-Fail-Test";
 		private const string _existingDatabaseConnectionKey = "Existing-Database";
 		private const string _existingDatabaseFileConnectionKey = "Existing-Database-File";
 		private const string _existingDatabaseFileWithoutLogFileConnectionKey = "Existing-Database-File-Without-Log-File";
 		private const int _maximumIdentifierLength = 124;
 		private const string _nonexistingDatabaseConnectionKey = "Nonexisting-Database";
+		private const string _nonexistingDatabaseFileConnectionKey = "Nonexisting-Database-File";
+		private const string _nonexistingLogFileConnectionKey = "Nonexisting-Log-File";
 		private const string _onlyProviderConnectionKey = "Only-Provider";
 
 		#endregion
 
 		#region Properties
-
-		protected internal virtual IConnectionStringBuilderFactory ConnectionStringBuilderFactory => _connectionStringBuilderFactory ?? (_connectionStringBuilderFactory = new ConnectionStringBuilderFactory(new DbProviderFactoriesWrapper()));
-
-		protected internal virtual IDatabaseManagerFactory DatabaseManagerFactory
-		{
-			get
-			{
-				// ReSharper disable InvertIf
-				if(_databaseManagerFactory == null)
-				{
-					var applicationDomain = new AppDomainWrapper(AppDomain.CurrentDomain);
-					var connectionStringBuilderFactory = new ConnectionStringBuilderFactory(new DbProviderFactoriesWrapper());
-					var fileSystem = new FileSystem();
-
-					_databaseManagerFactory = new DatabaseManagerFactory(applicationDomain, connectionStringBuilderFactory, fileSystem, connectionStringBuilderFactory.ProviderFactories);
-				}
-				// ReSharper restore InvertIf
-
-				return _databaseManagerFactory;
-			}
-		}
 
 		protected internal virtual string DropDatabaseFailTestConnectionKey => _dropDatabaseFailTestConnectionKey;
 		protected internal virtual string ExistingDatabaseConnectionKey => _existingDatabaseConnectionKey;
@@ -58,6 +34,8 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 		protected internal virtual string ExistingDatabaseFileWithoutLogFileConnectionKey => _existingDatabaseFileWithoutLogFileConnectionKey;
 		protected internal virtual int MaximumIdentifierLength => _maximumIdentifierLength;
 		protected internal virtual string NonexistingDatabaseConnectionKey => _nonexistingDatabaseConnectionKey;
+		protected internal virtual string NonexistingDatabaseFileConnectionKey => _nonexistingDatabaseFileConnectionKey;
+		protected internal virtual string NonexistingLogFileConnectionKey => _nonexistingLogFileConnectionKey;
 		protected internal virtual string OnlyProviderConnectionKey => _onlyProviderConnectionKey;
 
 		#endregion
@@ -362,17 +340,60 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 			Assert.IsFalse(databaseManager.FileSystem.File.Exists(databaseLogFilePath));
 		}
 
-		[CLSCompliant(false)]
-		protected internal virtual DatabaseManager GetDatabaseManager(string connectionName)
+		[TestMethod]
+		public void TryConnection_IfTheDatabaseFileDoesNotExist_ShouldReturnFalseAndAFileNotFoundException()
 		{
-			return this.GetDatabaseManager(Global.ConnectionSettings[connectionName]);
+			var nonexistingDatabaseFileConnection = Global.ConnectionSettings[this.NonexistingDatabaseFileConnectionKey];
+			var connectionStringBuilder = this.ConnectionStringBuilderFactory.Create(nonexistingDatabaseFileConnection.ConnectionString, nonexistingDatabaseFileConnection.ProviderName);
+			var databaseManager = this.GetDatabaseManager(nonexistingDatabaseFileConnection);
+
+			databaseManager.CreateDatabase(nonexistingDatabaseFileConnection.ConnectionString, false);
+
+			var databaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(databaseManager.ApplicationDomain);
+
+			Assert.IsTrue(databaseManager.DatabaseExists(nonexistingDatabaseFileConnection.ConnectionString));
+			Assert.IsTrue(databaseManager.FileSystem.File.Exists(databaseFilePath));
+
+			Thread.Sleep(TimeSpan.FromSeconds(1));
+			databaseManager.FileSystem.File.Delete(databaseFilePath);
+
+			Assert.IsFalse(databaseManager.FileSystem.File.Exists(databaseFilePath));
+
+			Assert.IsFalse(databaseManager.TryConnection(nonexistingDatabaseFileConnection.ConnectionString, out var exception));
+
+			var fileNotFoundException = exception as FileNotFoundException;
+
+			Assert.IsNotNull(fileNotFoundException);
+			Assert.AreEqual($"The database-file \"{connectionStringBuilder.DatabaseFilePath}\", \"{databaseFilePath}\", does not exist.", exception.Message);
+			Assert.AreEqual(databaseFilePath, fileNotFoundException.FileName);
 		}
 
-		[CLSCompliant(false)]
-		[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-		protected internal virtual DatabaseManager GetDatabaseManager(IConnectionSetting connectionSetting)
+		[TestMethod]
+		public void TryConnection_IfTheLogFileDoesNotExist_ShouldReturnTrueAndTheLogFileWillBeRecreated()
 		{
-			return (DatabaseManager) this.DatabaseManagerFactory.Create(connectionSetting.ProviderName);
+			var nonexistingLogFileConnection = Global.ConnectionSettings[this.NonexistingLogFileConnectionKey];
+			var connectionStringBuilder = this.ConnectionStringBuilderFactory.Create(nonexistingLogFileConnection.ConnectionString, nonexistingLogFileConnection.ProviderName);
+			var databaseManager = this.GetDatabaseManager(nonexistingLogFileConnection);
+
+			databaseManager.CreateDatabase(nonexistingLogFileConnection.ConnectionString, false);
+
+			var databaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(databaseManager.ApplicationDomain);
+			var databaseLogFilePath = databaseManager.GetDatabaseLogFilePath(databaseFilePath);
+
+			Assert.IsTrue(databaseManager.DatabaseExists(nonexistingLogFileConnection.ConnectionString));
+			Assert.IsTrue(databaseManager.FileSystem.File.Exists(databaseFilePath));
+			Assert.IsTrue(databaseManager.FileSystem.File.Exists(databaseLogFilePath));
+
+			Thread.Sleep(TimeSpan.FromSeconds(1));
+
+			databaseManager.FileSystem.File.Delete(databaseLogFilePath);
+
+			Assert.IsTrue(databaseManager.FileSystem.File.Exists(databaseFilePath));
+			Assert.IsFalse(databaseManager.FileSystem.File.Exists(databaseLogFilePath));
+
+			Assert.IsTrue(databaseManager.TryConnection(nonexistingLogFileConnection.ConnectionString, out _));
+
+			Assert.IsTrue(databaseManager.FileSystem.File.Exists(databaseLogFilePath));
 		}
 
 		#endregion

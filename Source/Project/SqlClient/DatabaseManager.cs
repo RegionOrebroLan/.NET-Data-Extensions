@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.IO.Abstractions;
 using RegionOrebroLan.Data.Extensions;
 
@@ -145,7 +146,7 @@ namespace RegionOrebroLan.Data.SqlClient
 			}
 		}
 
-		protected internal virtual void DetachDatabase(string connectionString)
+		public virtual void DetachDatabase(string connectionString)
 		{
 			this.DetachDatabase(this.CreateConnectionStringBuilder(connectionString));
 		}
@@ -238,6 +239,57 @@ namespace RegionOrebroLan.Data.SqlClient
 			var databaseName = this.FileSystem.Path.GetFileNameWithoutExtension(databaseFilePath);
 
 			return this.FileSystem.Path.Combine(databaseDirectoryPath, databaseName + this.DatabaseLogFilePathSuffix);
+		}
+
+		public virtual bool TryConnection(string connectionString, out Exception exception)
+		{
+			return this.TryConnection(this.CreateConnectionStringBuilder(connectionString), out exception);
+		}
+
+		[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
+		protected internal virtual bool TryConnection(IConnectionStringBuilder connectionStringBuilder, out Exception exception)
+		{
+			if(connectionStringBuilder == null)
+				throw new ArgumentNullException(nameof(connectionStringBuilder));
+
+			exception = null;
+
+			using(var connection = this.DatabaseProviderFactory.CreateConnection())
+			{
+				var databaseFilePath = connectionStringBuilder.DatabaseFilePath;
+				var actualDatabaseFilePath = connectionStringBuilder.GetActualDatabaseFilePath(this.ApplicationDomain);
+				connectionStringBuilder = connectionStringBuilder.Copy();
+				connectionStringBuilder.DatabaseFilePath = actualDatabaseFilePath;
+
+				// ReSharper disable PossibleNullReferenceException
+				connection.ConnectionString = connectionStringBuilder.ConnectionString;
+				// ReSharper restore PossibleNullReferenceException
+
+				try
+				{
+					connection.Open();
+
+					return true;
+				}
+				catch(Exception catchedException)
+				{
+					exception = catchedException;
+
+					if(catchedException is SqlException sqlException && sqlException.Number == 15350) // An attempt to attach an auto-named database for file *.* failed. A database with the same name exists, or specified file cannot be opened, or it is located on UNC share.
+					{
+						try
+						{
+							if(!string.IsNullOrWhiteSpace(actualDatabaseFilePath) && !this.FileSystem.File.Exists(actualDatabaseFilePath) && this.DatabaseExists(connectionStringBuilder))
+								exception = new FileNotFoundException($"The database-file \"{databaseFilePath}\", \"{actualDatabaseFilePath}\", does not exist.", actualDatabaseFilePath, catchedException);
+						}
+						// ReSharper disable EmptyGeneralCatchClause
+						catch { }
+						// ReSharper restore EmptyGeneralCatchClause
+					}
+
+					return false;
+				}
+			}
 		}
 
 		#endregion
