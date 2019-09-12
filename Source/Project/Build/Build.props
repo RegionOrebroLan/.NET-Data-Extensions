@@ -22,6 +22,7 @@
 		<Authors>$(Company)</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/RegionOrebroLan/.NET-Data-Extensions/</PackageProjectUrl>
+		<PackageReleaseNotes>https://github.com/RegionOrebroLan/.NET-Data-Extensions/releases/</PackageReleaseNotes>
 		<PackageTags></PackageTags>
 	</PropertyGroup>
 </Project>
