@@ -5,12 +5,12 @@ using System.Globalization;
 using System.IO.Abstractions;
 using RegionOrebroLan.Data.Common;
 using RegionOrebroLan.Data.SqlClient;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Data
 {
 	[CLSCompliant(false)]
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IDatabaseManagerFactory))]
+	[ServiceConfiguration(ServiceType = typeof(IDatabaseManagerFactory))]
 	public class DatabaseManagerFactory : IDatabaseManagerFactory
 	{
 		#region Constructors

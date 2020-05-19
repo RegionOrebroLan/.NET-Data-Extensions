@@ -3,11 +3,11 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Data.Common
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IProviderFactories))]
+	[ServiceConfiguration(ServiceType = typeof(IProviderFactories))]
 	public class DbProviderFactoriesWrapper : IProviderFactories
 	{
 		#region Methods

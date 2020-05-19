@@ -4,11 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using RegionOrebroLan.Data.Common;
 using RegionOrebroLan.Data.SqlClient;
-using RegionOrebroLan.ServiceLocation;
+using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Data
 {
-	[ServiceConfiguration(InstanceMode = InstanceMode.Singleton, ServiceType = typeof(IConnectionStringBuilderFactory))]
+	[ServiceConfiguration(ServiceType = typeof(IConnectionStringBuilderFactory))]
 	public class ConnectionStringBuilderFactory : IConnectionStringBuilderFactory
 	{
 		#region Constructors

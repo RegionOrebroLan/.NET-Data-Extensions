@@ -4,7 +4,7 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="RegionOrebroLan" Version="1.0.4" />
+		<PackageReference Include="RegionOrebroLan" Version="1.2.1-alpha" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
 		<PackageReference Include="System.IO.Abstractions" Version="4.0.11" />
 	</ItemGroup>
