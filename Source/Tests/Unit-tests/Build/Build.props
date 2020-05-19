@@ -1,0 +1,5 @@
+<Project>
+	<PropertyGroup>
+		<AssemblyName>RegionOrebroLan.Data.UnitTests</AssemblyName>
+	</PropertyGroup>
+</Project>

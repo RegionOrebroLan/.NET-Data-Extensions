@@ -265,5 +265,5 @@ Source/.Global/Signing/*
 !Source/.Global/Signing/ReadMe.md
 !Source/.Global/Signing/StrongName.Development.snk
 
-!Source/Integration-tests/App_Data/*.ldf
-!Source/Integration-tests/App_Data/*.mdf
+!Source/Tests/Integration-tests/App_Data/*.ldf
+!Source/Tests/Integration-tests/App_Data/*.mdf
