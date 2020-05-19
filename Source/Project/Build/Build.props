@@ -21,6 +21,7 @@
 	<PropertyGroup Label="NuGet-Package">
 		<Authors>$(Company)</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/RegionOrebroLan/.NET-Data-Extensions/</PackageProjectUrl>
 		<PackageReleaseNotes>https://github.com/RegionOrebroLan/.NET-Data-Extensions/releases/</PackageReleaseNotes>
 		<PackageTags></PackageTags>
