@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.IO.Abstractions;
+using Microsoft.Data.SqlClient;
 using RegionOrebroLan.Data.Extensions;
 
 namespace RegionOrebroLan.Data.SqlClient

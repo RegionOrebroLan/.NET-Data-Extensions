@@ -1,8 +1,8 @@
-﻿using System;
-using System.Data.SqlClient;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
+using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RegionOrebroLan.Data.Extensions;
 using RegionOrebroLan.Data.IntegrationTests.Configuration;

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using Microsoft.Data.SqlClient;
 using RegionOrebroLan.DependencyInjection;
 
 namespace RegionOrebroLan.Data.Common

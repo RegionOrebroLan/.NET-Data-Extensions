@@ -1,6 +1,6 @@
-﻿using System;
-using System.Data.SqlClient;
+using System;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Data.SqlClient;
 
 namespace RegionOrebroLan.Data.SqlClient
 {
@@ -75,7 +75,7 @@ namespace RegionOrebroLan.Data.SqlClient
 		}
 
 		protected internal virtual string ServerKey => _serverKey;
-		protected internal virtual SqlConnectionStringBuilder SqlConnectionStringBuilder => this._sqlConnectionStringBuilder ?? (this._sqlConnectionStringBuilder = new SqlConnectionStringBuilder(this.OriginalConnectionString));
+		protected internal virtual SqlConnectionStringBuilder SqlConnectionStringBuilder => this._sqlConnectionStringBuilder ??= new SqlConnectionStringBuilder(this.OriginalConnectionString);
 
 		#endregion
 
