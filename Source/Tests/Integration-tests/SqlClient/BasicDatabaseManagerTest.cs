@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using RegionOrebroLan.Data.Common;
@@ -18,7 +18,7 @@ namespace RegionOrebroLan.Data.IntegrationTests.SqlClient
 
 		#region Properties
 
-		protected internal virtual IConnectionStringBuilderFactory ConnectionStringBuilderFactory => _connectionStringBuilderFactory ?? (_connectionStringBuilderFactory = new ConnectionStringBuilderFactory(new DbProviderFactoriesWrapper()));
+		protected internal virtual IConnectionStringBuilderFactory ConnectionStringBuilderFactory => _connectionStringBuilderFactory ??= new ConnectionStringBuilderFactory(new DbProviderFactoriesWrapper());
 
 		protected internal virtual IDatabaseManagerFactory DatabaseManagerFactory
 		{

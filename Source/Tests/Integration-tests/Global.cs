@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
@@ -111,6 +111,7 @@ namespace RegionOrebroLan.Data.IntegrationTests
 		[AssemblyInitialize]
 		[CLSCompliant(false)]
 		[SuppressMessage("Usage", "CA1801:Review unused parameters")]
+		[SuppressMessage("Style", "IDE0060:Remove unused parameter")]
 		public static void Initialize(TestContext testContext)
 		{
 			const string dataDirectoryName = "App_Data";
